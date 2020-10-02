@@ -9,24 +9,7 @@ import 'package:hn_app/src/article.dart';
 enum StoriesType { topStories, newStories }
 
 class HackerNewsBloc {
-  static List<int> _newIds = [
-    24577522,
-    24590174,
-    24583314,
-    24586455,
-    24577738,
-    24593093,
-    24578166,
-  ];
-
-  static List<int> _topIds = [
-    24590401,
-    24587143,
-    24593028,
-    24581810,
-    24588655,
-    24601579
-  ];
+  static const _baseUrl = "https://hacker-news.firebaseio.com/v0/";
 
   Stream<bool> get isLoading => _isLoadingSubject.stream;
 
@@ -36,15 +19,15 @@ class HackerNewsBloc {
   final _storiesTypeController = StreamController<StoriesType>();
 
   HackerNewsBloc() {
-    _getArticlesAndUpdate(_topIds);
+    _intitializeArticles();
 
-    _storiesTypeController.stream.listen((storiesType) {
-      if (storiesType == StoriesType.newStories) {
-        _getArticlesAndUpdate(_newIds);
-      } else {
-        _getArticlesAndUpdate(_topIds);
-      }
+    _storiesTypeController.stream.listen((storiesType) async {
+      _getArticlesAndUpdate(await _getIds(storiesType));
     });
+  }
+
+  Future<void> _intitializeArticles() async {
+    _getArticlesAndUpdate(await _getIds(StoriesType.topStories));
   }
 
   _getArticlesAndUpdate(List<int> ids) async {
@@ -54,12 +37,25 @@ class HackerNewsBloc {
     _isLoadingSubject.add(false);
   }
 
+  Future<List<int>> _getIds(StoriesType type) async {
+    final partUrl = type == StoriesType.topStories ? 'top' : 'new';
+    final url = '$_baseUrl${partUrl}stories.json';
+
+    final response = await http.get(url);
+    if (response.statusCode != 200) {
+      throw HackerNewsApiError("Stories $type couldn't be fetched!");
+    }
+    return parseTopStories(response.body);
+  }
+
   Future<Article> _getArticle(int id) async {
-    final storyUrl = 'https://hacker-news.firebaseio.com/v0/item/$id.json';
+    final storyUrl = '${_baseUrl}item/$id.json';
     final storyResponse = await http.get(storyUrl);
     if (storyResponse.statusCode == 200) {
       return parseArticle(storyResponse.body);
     }
+
+    throw HackerNewsApiError("Article $id couldn't be fetched!");
   }
 
   Stream<UnmodifiableListView<Article>> get articles => _articlesSubject.stream;
@@ -72,4 +68,14 @@ class HackerNewsBloc {
 
     _articles = articles;
   }
+
+  void close() {
+    _storiesTypeController.close();
+  }
+}
+
+class HackerNewsApiError extends Error {
+  final String message;
+
+  HackerNewsApiError(this.message);
 }

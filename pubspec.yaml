@@ -1,6 +1,6 @@
 name: hn_app
 description: A new Flutter application that looks like Hacker News.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
@@ -16,6 +16,7 @@ dependencies:
   built_value: ^7.1.0
   http: ^0.12.2
   rxdart: ^0.24.1
+  font_awesome_flutter: ^8.8.1
 
 dev_dependencies:
   build_runner: ^1.10.1
@@ -26,5 +27,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-

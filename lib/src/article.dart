@@ -60,123 +60,16 @@ abstract class Article implements Built<Article, ArticleBuilder> {
 }
 
 List<int> parseTopStories(String jsonString) {
-  return [];
-  /*final parsed = json.decode(jsonString);
+  final parsed = json.decode(jsonString);
   final listOfIds = List<int>.from(parsed);
 
-  return listOfIds;*/
+  return listOfIds;
 }
 
 Article parseArticle(String jsonString) {
   final parsed = json.decode(jsonString);
   Article article =
-  standardSerializers.deserializeWith(Article.serializer, parsed);
+      standardSerializers.deserializeWith(Article.serializer, parsed);
 
   return article;
 }
-
-
-
-// class Article {
-//   final String text;
-//   final String domain;
-//   final String by;
-//   final String age;
-//   final String score;
-//   final String commentsCount;
-//
-//   const Article(
-//       {this.text,
-//       this.domain,
-//       this.by,
-//       this.age,
-//       this.score,
-//       this.commentsCount});
-// }
-//
-// final articles = [
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "1 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/"),
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "2 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/"),
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "3 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/"),
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "4 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/"),
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "5 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/"),
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "6 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/"),
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "7 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/"),
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "8 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/"),
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "9 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/"),
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "10 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/"),
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "11 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/"),
-//   new Article(
-//       by: "jka",
-//       commentsCount: "30",
-//       score: "109",
-//       age: "1601127717",
-//       text: "12 - Ora2Pg – Oracle to PostgreSQL database schema converter",
-//       domain: "https://www.ora2pg.com/")
-// ];

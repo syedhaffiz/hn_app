@@ -11,6 +11,7 @@ enum StoriesType { topStories, newStories }
 class HackerNewsBloc {
   static const _baseUrl = "https://hacker-news.firebaseio.com/v0/";
 
+  HashMap<int, Article> _cachedArticles;
   Stream<bool> get isLoading => _isLoadingSubject.stream;
 
   final _isLoadingSubject = BehaviorSubject<bool>();
@@ -19,6 +20,7 @@ class HackerNewsBloc {
   final _storiesTypeController = StreamController<StoriesType>();
 
   HackerNewsBloc() {
+    _cachedArticles = HashMap<int, Article>();
     _intitializeArticles();
 
     _storiesTypeController.stream.listen((storiesType) async {
@@ -49,13 +51,17 @@ class HackerNewsBloc {
   }
 
   Future<Article> _getArticle(int id) async {
-    final storyUrl = '${_baseUrl}item/$id.json';
-    final storyResponse = await http.get(storyUrl);
-    if (storyResponse.statusCode == 200) {
-      return parseArticle(storyResponse.body);
+    if (!_cachedArticles.containsKey(id)) {
+      final storyUrl = '${_baseUrl}item/$id.json';
+      final storyResponse = await http.get(storyUrl);
+      if (storyResponse.statusCode == 200) {
+        _cachedArticles[id] = parseArticle(storyResponse.body);
+      } else {
+        throw HackerNewsApiError("Article $id couldn't be fetched!");
+      }
     }
 
-    throw HackerNewsApiError("Article $id couldn't be fetched!");
+    return _cachedArticles[id];
   }
 
   Stream<UnmodifiableListView<Article>> get articles => _articlesSubject.stream;

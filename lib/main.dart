@@ -141,7 +141,6 @@ class _LoadingInfoState extends State<LoadingInfo>
     return StreamBuilder(
         stream: widget._isLoading,
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-          // if (snapshot.hasData && snapshot.data) {
           _animationController
               .forward()
               .then((value) => _animationController.reverse());
@@ -151,11 +150,6 @@ class _LoadingInfoState extends State<LoadingInfo>
             opacity: Tween(begin: 1.0, end: 0.5).animate(CurvedAnimation(
                 curve: Curves.easeIn, parent: _animationController)),
           );
-          // }
-
-          // _animationController.reverse();
-
-          // return Container();
         });
   }
 }

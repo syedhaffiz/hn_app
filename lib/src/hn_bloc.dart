@@ -47,7 +47,7 @@ class HackerNewsBloc {
     if (response.statusCode != 200) {
       throw HackerNewsApiError("Stories $type couldn't be fetched!");
     }
-    return parseTopStories(response.body);
+    return parseTopStories(response.body).take(10).toList();
   }
 
   Future<Article> _getArticle(int id) async {
